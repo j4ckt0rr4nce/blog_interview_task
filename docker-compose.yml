@@ -1,0 +1,24 @@
+version: "3.10"
+   
+services:
+  db:
+    image: nouchka/sqlite3:latest
+    volumes:
+      - ./data/db:/root/db
+    environment:
+      - SQLITE3_DB=db.sqlite3
+  web:
+    build: .
+    container_name: blog_interview_task
+    command: bash -c "python manage.py makemigrations &&
+             python manage.py migrate &&
+             python manage.py loaddata tag_fixtures.json &&
+             python manage.py loaddata posts_fixtures.json &&
+             python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/home/blog_interview_task
+    ports:
+      - "8000:8000"
+    restart: always
+    depends_on:
+      - db

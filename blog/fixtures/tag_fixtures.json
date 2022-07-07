@@ -1,0 +1,71 @@
+[
+{
+    "model": "blog.categorytag",
+    "pk": 1,
+    "fields": {
+        "name": "pc"
+    }
+},
+{
+    "model": "blog.categorytag",
+    "pk": 2,
+    "fields": {
+        "name": "orange"
+    }
+},
+{
+    "model": "blog.categorytag",
+    "pk": 3,
+    "fields": {
+        "name": "chair"
+    }
+},
+{
+    "model": "blog.categorytag",
+    "pk": 4,
+    "fields": {
+        "name": "blanket"
+    }
+},
+{
+    "model": "blog.categorytag",
+    "pk": 5,
+    "fields": {
+        "name": "window"
+    }
+},{
+    "model": "blog.categorytag",
+    "pk": 6,
+    "fields": {
+        "name": "book"
+    }
+},
+{
+    "model": "blog.categorytag",
+    "pk": 7,
+    "fields": {
+        "name": "smartphone"
+    }
+},
+{
+    "model": "blog.categorytag",
+    "pk": 8,
+    "fields": {
+        "name": "trousers"
+    }
+},
+{
+    "model": "blog.categorytag",
+    "pk": 9,
+    "fields": {
+        "name": "tablet"
+    }
+},
+{
+    "model": "blog.categorytag",
+    "pk": 10,
+    "fields": {
+        "name": "beer"
+    }
+}
+]

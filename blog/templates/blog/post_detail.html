@@ -1,0 +1,38 @@
+{% extends 'blog/base.html' %}
+{% block title %}Post Detail{% endblock %}
+{% load static %}
+
+{% block content %}
+
+<div class="ui segment">
+	<h2>Post Detail</h2>
+	<div class="ui grid">
+		<div class="row">
+            <div class="seven wide column">
+                <img class="ui large rounded image" src="{{ post.image.url }}">
+            </div>
+            <div class="nine wide column">
+                <table class="ui table">
+		        	<tbody>
+		        		<tr>
+		        			<td>
+                                <h3 class="">{{ post.title }}</h3>
+                                <p style="word-break: break-word;" class="">{{post.content|safe }}</p>
+                                <input type="button" onclick="history.back()" class="ui secondary button" value="Back to Posts &rarr;"</input>
+                            </td>
+		        		</tr>
+		        	</tbody>
+		        </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="twelve wide column">
+                <a href="/category/{{'pc'|slugify}}" style="padding:7px !important;" class="ui primary button">pc</a>
+                <a href="/category/{{'tablet'|slugify}}" style="padding:7px !important;" class="ui primary button">tablet</a>
+                <a href="/category/{{'smartphone'|slugify}}" style="padding:7px !important;" class="ui primary button">smartphone</a>
+            </div>
+        </div>
+	</div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,53 @@
+{% extends 'blog/base.html' %}
+{% block title %}Post Category{% endblock %}
+{% load static %}
+
+{% block content %}
+
+<div class="ui segment" style="margin-bottom:30px;">
+	<h2>Category: {{ tag }}</h2>
+	<div class="ui grid">
+        {% for post in posts %}
+        <div class="row">
+            <div class="three wide column">
+                <img class="ui medium rounded image" src="{{ post.image_thumb.url }}">
+            </div>
+            <div class="eleven wide column">
+                <table class="ui table">
+		        	<tbody>
+		        		<tr>
+		        			<td>
+                                <h3 class="">{{ post.title }}</h3>
+                                <p style="word-break: break-word;" class="">{{post.content|safe }}</p>
+                                <a href="{{ post.get_absolute_url }}" class="ui secondary button">Read More &rarr;</a>
+                            </td>
+		        		</tr>
+		        	</tbody>
+		        </table>
+            </div>
+        </div>
+        {% endfor %}
+        <div class="twelve wide column">
+            <div class="ten wide column">
+                <a href="/category/{{'pc'|slugify}}" style="padding:7px !important;" class="ui primary button">pc</a>
+                <a href="/category/{{'tablet'|slugify}}" style="padding:7px !important;" class="ui primary button">tablet</a>
+                <a href="/category/{{'smartphone'|slugify}}" style="padding:7px !important;" class="ui primary button">smartphone</a>
+            </div>
+        </div>    
+        {% if is_paginated %}
+        <div class="row">
+            <div class="sixteen wide column">
+                <nav aria-label="Page navigation conatiner"></nav>
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}" style="margin-left:30%;">&laquo; PREV </a>
+                {% endif %}
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}" style="margin-right:30%; float:right;"> NEXT &raquo;</a>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+	</div>
+</div>
+
+{% endblock content %}
