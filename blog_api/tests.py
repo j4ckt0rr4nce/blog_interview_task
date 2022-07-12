@@ -6,10 +6,11 @@ from .views import PostList, PostDetail, CategoryList
 
 
 class PostTests(APITestCase):
+    fixtures = ['tag_fixtures.json', 'posts_fixtures.json']
+
     def setUp(self):
-        self.test_post = Post.objects.create(title='Panda', content='Panda is bear-like animal and climb trees.',
-                                             image='panda.png')
-        self.tag = CategoryTag.objects.create(name='animal')
+        self.test_post = Post.objects.get(title='Bunny')
+        self.tag = CategoryTag.objects.get(name='pc')
 
     def tearDown(self):
         pass
@@ -17,18 +18,20 @@ class PostTests(APITestCase):
     def test_view_posts(self):
         url = reverse('blog_api:list_post')
         response = self.client.get(url, format='json')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(resolve(url).func.view_class, PostList)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data[0]['title'], 'Squirrel')
 
     def test_post_detail(self):
         url = reverse('blog_api:detail_post', kwargs={'pk': 1})
         response = self.client.get(url, format='json')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(resolve(url).func.view_class, PostDetail)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['title'], 'Bunny')
 
     def test_view_category_list(self):
         self.test_post.tags.add(self.tag)
         url = reverse('blog_api:category_list', kwargs={'tag': 1})
         response = self.client.get(url, format='json')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(resolve(url).func.view_class, CategoryList)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)

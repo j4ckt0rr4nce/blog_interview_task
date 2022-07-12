@@ -1,22 +1,27 @@
 from django.test import TestCase
 from .models import Post, CategoryTag
-from django.urls import reverse
+from django.urls import reverse, resolve
+from .views import PostList, PostDetail, list_category
 
 
 class PostTesting(TestCase):
+    fixtures = ['tag_fixtures.json', 'posts_fixtures.json']
+
     def setUp(self):
-        self.post = Post.objects.create(title='Panda', content='Panda is bear-like animal and climb trees.',
-                                        image='panda.png')
-        self.tag1 = CategoryTag.objects.create(name='animal')
-        self.tag2 = CategoryTag.objects.create(name='food')
+        self.post = Post.objects.get(title='Bunny')
+        self.tag1 = CategoryTag.objects.get(name='pc')
+        self.tag2 = CategoryTag.objects.get(name='smartphone')
+
+    def tearDown(self):
+        pass
 
     def test_post_model(self):
         self.post.tags.add(self.tag1)
         self.post.tags.add(self.tag2)
         self.assertTrue(isinstance(self.post, Post))
-        self.assertEqual(str(self.post), 'id: 1, title: Panda')
-        self.assertEqual(str(self.tag1), 'id: 1, name: animal')
-        self.assertEqual(str(self.tag2), 'id: 2, name: food')
+        self.assertEqual(str(self.post), 'id: 1, title: Bunny')
+        self.assertEqual(str(self.tag1), 'id: 1, name: pc')
+        self.assertEqual(str(self.tag2), 'id: 7, name: smartphone')
         self.assertEqual(str(Post._meta.verbose_name_plural), "Posts")
 
     def test_list_view(self):
@@ -24,16 +29,18 @@ class PostTesting(TestCase):
         response = self.client.get(url)
         self.assertTrue(response, url)
         self.assertTemplateUsed('homepage.html')
-        self.assertContains(response, 'Panda')
-        self.assertContains(response, 'Panda is bear-like animal and climb trees.')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(resolve(url).func.view_class, PostList)
 
     def test_list_detail(self):
         url = reverse('post_detail', kwargs={'pk': 1})
         response = self.client.get(url)
         self.assertTrue(response, url)
         self.assertTemplateUsed('post_detail.html')
-        self.assertContains(response, 'Panda')
-        self.assertContains(response, 'Panda is bear-like animal and climb trees.')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(resolve(url).func.view_class, PostDetail)
+        self.assertContains(response, 'Bunny')
+        self.assertContains(response, 'Rabbits, also known as bunnies or bunny rabbits, are small mammals')
 
     def test_view_category_list(self):
         self.post.tags.add(self.tag1)
@@ -41,3 +48,5 @@ class PostTesting(TestCase):
         response = self.client.get(url)
         self.assertTrue(response, url)
         self.assertTemplateUsed('tag.html')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(resolve(url).func, list_category)
